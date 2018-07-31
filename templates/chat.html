@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chatbot</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontawesome-all.min.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script src="//code.responsivevoice.org/responsivevoice.js"></script>
+	<style type="text/css">
+		html, body{
+			height: 100%;
+		}
+		.container-fluid{
+			height: 100%;
+			min-height: 100%;
+			padding-left: 0px;
+			padding-right: 0px;
+			background-image: url('/static/img/background.jpg');
+		}
+		.chatbox{
+			height: 100%;
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.conversation{
+			padding: 10px;
+			height: 85%;
+			background: rgba(0,121,107, 0.8);
+			overflow-y: auto;
+		}
+		.input{
+			height: 15%;
+			padding: 30px;
+			background: rgba(224,224,224, 0.8);
+		}
+		.media{
+			margin-bottom: 20px;
+		}
+		.media .media-body .msg{
+			background: #F5F5F5;
+			padding: 10px;
+			font-size: 15px;
+			margin-bottom: 10px;
+			width: fit-content;
+		}
+
+		::-webkit-scrollbar{
+			width: 10px;
+		}
+
+		::-webkit-scrollbar-track{
+			background: transparent;
+		}
+
+		::-webkit-scrollbar-thumb{
+			border-radius: 10px;
+			background: #F5F5F5;
+		}
+
+		::-webkit-scrollbar-thumb:hover{
+			background: #BDBDBD;
+		}
+
+		.card{
+			padding: 10px;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="col-md-8 offset-md-2 chatbox">
+			<div class="conversation">
+
+				<!--bot-->
+				<div class="media">
+				  <img class="mr-3 rounded-circle" src="/static/img/bot.png" alt="bot image">
+				  <div class="media-body">
+				    <div class="msg">
+				    	Bạn cần giúp gì?
+				    </div>
+				  </div>
+				</div>
+
+			</div>
+			<div class="input">
+				<form>
+					<div class="input-group mb-3">
+					  <input type="text" id="txtSend" class="form-control" placeholder="Nhập tin nhắn">
+					  <div class="input-group-append">
+					  	<div class="btn-group" role="group" aria-label="Basic example">
+					  		<button type="submit" class="btn btn-primary" id="btnSend">Gửi</button>
+					  		<button type="button" class="btn btn-danger" id="btnExit"><i class="fas fa-sign-out-alt"></i></button>
+					  	</div>
+					  </div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$().ready(function(e){
+
+			var t2s = {{t2s}};
+
+			responsiveVoice.setDefaultVoice("Vietnamese Female");
+
+			if (t2s)
+				responsiveVoice.speak($('.msg').text());
+
+
+			$('#btnExit').click(function(e){
+
+				if(confirm("Bạn có muốn thoát?"))
+					window.location.href = '{{ host_url }}out';
+
+			});
+
+			$('#btnSend').click(function(e){
+				e.preventDefault();
+				var txt = $('#txtSend').val();
+				if(txt.trim() == '') 
+					alert("Bạn chưa nhập nội dung");
+				else
+				{
+					$('.conversation').append('<!--human--><div class="media"><div class="media-body"><div class="msg float-right">' + txt + '</div><div class="clearfix"></div></div><img class="ml-3 rounded-circle" src="/static/img/pic{{ gender }}.png" alt="person image"></div>');
+
+					$('.conversation').animate({
+						scrollTop: $('.conversation').get(0).scrollHeight
+					}, 500);
+
+					$('.conversation').append('<!--bot--><div class="media pending"><img class="mr-3 rounded-circle" src="/static/img/bot.png" alt="bot image"><div class="media-body"><div class="msg"><i class="fas fa-spinner fa-pulse"></i></div></div></div>');
+
+					$('#txtSend').val('');
+
+					$.ajax({
+						url: '/response',
+						data: JSON.stringify({"txt": txt}),
+						dataType: 'json',
+						contentType: 'application/json',
+						method: 'post',
+						success: function(result){
+
+							$('.pending').remove();
+
+							$('.conversation').append('<!--bot--><div class="media"><img class="mr-3 rounded-circle" src="/static/img/bot.png" alt="bot image"><div class="media-body"><div class="msg">' + result['txt'] + '</div></div></div>');
+
+							if(t2s)
+							{
+								var end = $('.conversation .media:last-child .msg');
+								responsiveVoice.speak(end.text());
+							}
+
+							$('.conversation').animate({
+								scrollTop: $('.conversation').get(0).scrollHeight
+							}, 500);
+
+							$('.btn-select').unbind('click');
+
+							$('.btn-select').click(function(e){
+
+								$('#txtSend').val($(this).text());
+								$('#btnSend').trigger('click');
+
+							});
+							
+						},
+						error: function(){
+							alert("Đã xảy ra lỗi!");
+						}
+					})
+				}
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+{
+	"chao_hoi": {
+		"patterns": ["xin chào", "chào", "hello", "hi"],
+		"responses": ["Chào {name}", "Hello", "Hi"],
+		"type": 1
+	},
+	"tam_biet":{
+		"patterns": ["hẹn gặp lại", "tạm biệt", "goodbye", "bye"],
+		"responses": ["Tạm biệt", "Goodbye"],
+		"type": 1
+	},
+	"hoi_ten":{
+		"patterns": ["tên gì", "cho biết quý danh"],
+		"responses": ["Mình tên là ChatBot", "ChatBot là tên em"],
+		"type": 1
+	},
+	"hoi_lam_gi":{
+		"patterns": ["đang làm gì", "làm việc gì"],
+		"responses": ["Đang tư vấn", "Đang nói chuyện với bạn nè"],
+		"type": 1
+	},
+	"hoi_suc_khoe":{
+		"patterns": ["khỏe không", "cảm thấy thế nào"],
+		"responses": ["Tràn đầy năng lượng", "ổn"],
+		"type": 1
+	},
+	"hoi_ten_ban":{
+		"patterns": ["tôi tên gì", "tao là ai", "mình là ai", "mình tên gì"],
+		"responses": ["Bạn tên là {name}"],
+		"type": 1
+	},
+	"cam_on":{
+		"patterns": ["cảm ơn", "thank", "😘", "😍"],
+		"responses": ["😘", "Không có chi", "Được nói chuyện với {name} rất vui", "Cảm ơn"],
+		"type": 1
+	},
+	"khen":{
+		"patterns": ["giỏi quá", "được lắm", "tốt lắm", "👍"],
+		"responses": ["Không có chi", "Cảm ơn"],
+		"type": 1
+	},
+	"cxma":{
+		"patterns": ["ngon quá", "ok lắm"],
+		"responses": ["😋", "Tuyệt!"],
+		"type": 1
+	},
+	"cuoi":{
+		"patterns": ["haha", "hihi", "vui quá", "hay quá"],
+		"responses": ["Cảm ơn"],
+		"type": 1
+	},
+	"cam_xuc_buon":{
+		"patterns": ["buồn quá", "chán quá"],
+		"action": "build_query",
+		"question": "Xem mấy cái này cho vui",
+		"options": ["Tin tức", "Truyện cười", "Xem bói"],
+		"type": 2
+	},
+	"hoi_thoi_tiet": {
+		"patterns": ["thời tiết ở", "nóng bao nhiêu độ", "nhiệt độ ở", "thời tiết", "nhiệt độ"],
+		"action": "get_temp",
+		"type": 2
+	},
+	"hoi_do_am":{
+		"patterns": ["Độ ẩm của da là gì"],
+		"responses": ["Độ ẩm = Dầu + Nước"],
+		"type": 1
+	},
+	"hoi_thoi_gian":{
+		"patterns": ["mấy giờ rồi", "thời gian"],
+		"action": "get_datetime",
+		"type": 2
+	},
+	"tinh_bmi":{
+		"patterns": ["tính bmi", "chỉ số bmi", "tính bmi 1.72 m 45 kg", "chỉ số bmi 1.72 45"],
+		"action": "get_bmi",
+		"type": 2
+	},
+	"nhap_so_lieu": {
+		"patterns": ["100 m 25 m", "100 200", "ngày 1", "1"],
+		"intents": ["tinh_bmi", "doi_ngay_am", "doi_ngay_duong"],
+		"type": 4
+	},
+	"nhap_ten_rieng": {
+		"patterns": ["ABC"],
+		"intents": ["hoi_thoi_tiet"],
+		"type": 4
+	},
+	"doi_ngay_am": {
+		"patterns": ["âm lịch ngày 1", "lịch âm của ngày 1", "âm lịch", "ngày dương lịch 1 theo âm lịch là ngày", "ngày âm của ngày"],
+		"action": "convert_lunar_day",
+		"type": 2
+	},
+	"doi_ngay_duong":{
+		"patterns": ["dương lịch ngày 1", "lịch dương của ngày 1", "ngày âm lịch 1 theo dương lịch là ngày", "ngày dương của ngày"],
+		"action": "convert_solar_day",
+		"type": 2
+	},
+	"tim_wikipedia":{
+		"patterns": ["tích phân là gì?", "Nguyễn Trãi là ai?"],
+		"action": "get_wiki",
+		"type": 2
+	},
+	"xem_boi":{
+		"patterns": ["bói bài", "xem bói"],
+		"action": "get_info_boi",
+		"type": 2
+	},
+	"xem_tin_tuc":{
+		"patterns": ["đọc báo", "xem tin tức", "xem báo"],
+		"params": {"bao": "QUIZ"},
+		"question": {"bao": "{name} muốn đọc báo nào?"},
+		"options": {"bao": ["vietnamnet", "vnexpress", "tinhte.vn", "dân trí"]}, 
+		"action": "build_query",
+		"x_action": "get_info_bao",
+		"type": 2
+	},
+	"loai_bao": {
+		"patterns": ["vietnamnet", "vnexpress", "tinhte.vn", "dân trí"],
+		"params": {"bao": "QUIZ"},
+		"intent": "xem_tin_tuc",
+		"type": 3
+	},
+	"goi_y_ve_da": {
+		"patterns": ["gợi ý về chăm sóc da", "gợi ý chăm sóc da khô", "gợi ý chăm sóc da thường", "gợi ý chăm sóc da dầu"],
+		"params": {"skin": "QUIZ"},
+		"action": "build_query",
+		"x_action": "get_suggest_skin",
+		"responses": {
+			"da thường": [
+				"Sữa rửa mặt: Chọn những sản phẩm không chứa Sulfate có khả năng làm sạch nhẹ nhàng nhưng vẫn mềm mịn.", 
+				"Toner: Tránh những thành phần SD Alcohol 40, Denatured Alcohol, Ethanol, Isopropyl Alcohol.", 
+				"Kem dưỡng ẩm: Khi bạn sử dụng kem dưỡng ẩm, đừng quên apply thêm vào phần cổ.",
+				"Kem chống nắng: Đây là loại da dễ lựa chọn các sản pẩm dưỡng da nhất cho nên bạn có thể lụa chọn bất kì sản phẩm nào. Tuy nhiên, vào mùa hè, bạn nên chọn những loại kem chống nắng có kết cấu mỏng nhẹ để tránh tình trạng bí da."
+			],
+			"da khô": [
+				"Sữa rửa mặt:  Sữa rửa mặt mà da dầu nên lựa chọn là những loại sữa rửa mặt không tạo bọt, không xà phòng. Những loại sữa rửa mặt tốt nhất dành cho da khô là những loại có texture dạng sữa.",
+				"Serum chống oxy hóa: Những sản phẩm serum chứa Vitamin E, A, C được dùng trong chu trình dưỡng da buổi sáng có thể giúp củng cố lại sự kết nối của collagen."
+			],
+			"da dầu": [
+				"Sữa rửa mặt:  Sữa rửa mặt mà da dầu nên lựa chọn là những loại sữa rửa mặt không tạo bọt, không xà phòng. Những loại sữa rửa mặt tốt nhất dành cho da khô là những loại có texture dạng sữa.",
+				"Serum chống oxy hóa: Những sản phẩm serum chứa Vitamin E, A, C được dùng trong chu trình dưỡng da buổi sáng có thể giúp củng cố lại sự kết nối của collagen."
+			]
+		},
+		"question": {"skin": "{name} thuộc loại da nào?"},
+		"options": {"skin": ["da thường", "da khô", "da dầu"]},
+		"type": 2
+	},
+	"loai_da":{
+		"patterns": ["da thường", "da khô", "da dầu"],
+		"params": {"skin": "QUIZ"},
+		"intent": "goi_y_ve_da",
+		"type": 3
+	},
+	"goi_y":{
+		"patterns": ["gợi ý tiếp", "tiếp theo", "xem tiếp", "gợi ý khác", "xem cái khác", "tin tức khác", "xem tin khác", "xem quán ăn khác", "món ăn khác"],
+		"intents": ["goi_y_ve_da", "goi_y_truyen_cuoi", "xem_tin_tuc", "ddau#goi_y_quan_an"],
+		"type": 4
+	},
+	"goi_y_truyen_cuoi":{
+		"patterns": ["kể truyện cười", "xem truyện cười", "gợi ý truyện cười", "đọc truyện cười", "kể chuyện cười"],
+		"action": "get_story",
+		"type": 2
+	},
+	"ket_qua_xo_so":{
+		"patterns": ["tra cứu kết quả xổ số", "tra cứu kết quả xổ số miền bắc", "kết quả xổ số ABC", "xổ số ABC"],
+		"action": "get_kqxs",
+		"type": 2
+		
+	},
+	"ddau#goi_y_quan_an": {
+		"patterns": ["gợi ý món ăn", "đói quá ăn gì", "tìm quán ăn", "ăn gì", "🍽️", "tìm quán ăn ở quận", "tìm món ăn ABC", "tìm quán ABC ở"],
+		"params": {"page": "NUMBER", "loc": "NAME", "keyword": "NAME"},
+		"action": "get_quan_an",
+		"type": 2
+	},
+	"khong_biet":{
+		"responses": ["Em không biết", "Em không hiểu", "Cái này chưa học"],
+		"type": 1
+	}
+}
