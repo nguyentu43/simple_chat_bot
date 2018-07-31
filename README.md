@@ -1,5 +1,5 @@
 # Simple ChatBot
 
-Softmax Regression
-TensorFlow
-Flask
+* Softmax Regression
+* TensorFlow
+* Flask
