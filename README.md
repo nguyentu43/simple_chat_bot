@@ -1,7 +1,7 @@
 # Simple ChatBot
 
-* Softmax Regression
+* Softmax Regression (Model)
 * TensorFlow
 * Flask
 
-[Demo](http://chatbot-659299.herokuapp.com/)
+[Try it](http://chatbot-659299.herokuapp.com/)
